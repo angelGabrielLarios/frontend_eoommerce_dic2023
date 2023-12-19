@@ -1,0 +1,6 @@
+export * from './HomePage.tsx'
+export * from './LoginPage.tsx'
+export * from './RegisterPage.tsx'
+export * from './RecoveryPassPage.tsx'
+export * from './RestorePassPage.tsx'
+export * from './ProductInfoPage.tsx'

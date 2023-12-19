@@ -1,0 +1,71 @@
+import { PrivateRoute } from "./PrivateRoute.tsx";
+import { Navigate, createBrowserRouter } from "react-router-dom";
+import { HomePage, LoginPage, ProductInfoPage, RecoveryPassPage, RegisterPage, RestorePassPage } from "../pages";
+import { getProductsAPI, getProductsByIdAPI, getProductsBySectionAPI } from "../API";
+import { GridCardsProduct } from "../components"
+
+export const router = createBrowserRouter([
+    {
+        path: '/',
+        loader: async () => {
+            const products = await getProductsAPI()
+            return products
+        },
+        element: <PrivateRoute>
+            <HomePage />
+        </PrivateRoute>,
+        children: [
+            {
+                index: true,
+                element: <GridCardsProduct />,
+                loader: async () => {
+                    const products = await getProductsAPI()
+                    return products
+                }
+            },
+            {
+                path: 'products/:section',
+                element: <GridCardsProduct />,
+                loader: async ({ params }) => {
+                    const { section } = params as { section: string }
+                    const products = await getProductsBySectionAPI({ nameSection: section })
+                    return products
+                },
+
+            },
+            {
+                path: `products/*`,
+                element: <Navigate to={`/`} />
+            }
+        ]
+
+    },
+    {
+        path: `/product/:id`,
+        loader: async ({ params }) => {
+            const { id } = params as { id: string }
+            const product = await getProductsByIdAPI({ id })
+            return product
+        },
+        element: <PrivateRoute>
+            <ProductInfoPage />
+        </PrivateRoute>
+    },
+    {
+        path: '/auth/login',
+        element: <LoginPage />
+    },
+    {
+        path: 'auth/register',
+        element: <RegisterPage />
+    },
+    {
+        path: 'auth/recovery-password',
+        element: <RecoveryPassPage />
+    },
+    {
+        path: 'auth/restore-password',
+        element: <RestorePassPage />
+    }
+
+])

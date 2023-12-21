@@ -1,7 +1,12 @@
 
 
+import { IProfile } from "../store"
 import { ExceptionNestjs, IExceptionNestJs } from "./errors"
 import { urlAPI } from "./url"
+
+
+export interface IProfileRes extends IProfile { }
+
 export const getUserAPI = async (access_token: string) => {
 
     const response = await fetch(`${urlAPI}/auth/profile`, {
@@ -16,7 +21,7 @@ export const getUserAPI = async (access_token: string) => {
         throw new ExceptionNestjs(data)
     }
 
-    const data = await response.json()
+    const data = await response.json() as IProfileRes
     return data
 
 

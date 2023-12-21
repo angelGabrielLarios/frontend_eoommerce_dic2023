@@ -1,5 +1,5 @@
 import { ModalAlert } from "../components"
-import { useRestorePassPage } from "../hooks"
+import { useRestorePassPage } from "../hooks/pages"
 
 export const RestorePassPage = () => {
 

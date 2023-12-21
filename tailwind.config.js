@@ -2,6 +2,10 @@
 /** @type {import('tailwindcss').Config} */
 
 import daisyui from "daisyui";
+('tailwindcss-animated')
+import tailwindcss_animated from "tailwindcss-animated";
+
+
 export default {
   content: [
     "./index.html",
@@ -19,7 +23,8 @@ export default {
     themes: ["halloween"],
   },
   plugins: [
-    daisyui
+    daisyui,
+    tailwindcss_animated
   ],
 }
 

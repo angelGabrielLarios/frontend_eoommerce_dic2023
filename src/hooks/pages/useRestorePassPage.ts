@@ -1,9 +1,9 @@
 import { useRef, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { TypesAlerts } from "../components/types"
-import { ExceptionNestjs } from "../API/errors"
+import { TypesAlerts } from "../../components/types"
+import { ExceptionNestjs } from "../../API/errors"
 import { useNavigate } from "react-router-dom"
-import { restorePasswordAPI } from "../API"
+import { restorePasswordAPI } from "../../API"
 
 
 interface IFormInputs {

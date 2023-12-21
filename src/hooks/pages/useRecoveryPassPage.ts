@@ -1,18 +1,17 @@
 import { useRef, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { TypesAlerts } from "../components/types"
-import { loginAPI } from "../API"
-import { ExceptionNestjs } from "../API/errors"
+import { TypesAlerts } from "../../components/types"
+import { recoveryPassAPI } from "../../API"
+import { ExceptionNestjs } from "../../API/errors"
 import { useDispatch } from "react-redux"
-import { setAccessToken } from "../store"
-import { useNavigate } from "react-router-dom"
+import { setEmailRecoveryPass, setTokenRecoveryPass } from "../../store"
+
 
 
 interface IFormInputs {
     email: string
-    password: string
 }
-export const useLoginPage = () => {
+export const useRecoveryPassPage = () => {
 
     const { register, reset, handleSubmit, formState: { errors } } = useForm<IFormInputs>()
 
@@ -26,30 +25,34 @@ export const useLoginPage = () => {
 
     const [isShowPassword, setIsShowPassword] = useState(false)
 
-    const dispatch = useDispatch()
-
-    const navigate = useNavigate()
+    const dispath = useDispatch()
 
     const onSubmit: SubmitHandler<IFormInputs> = async (data: IFormInputs) => {
 
         setIsLoading(true)
         try {
-            const { access_token } = await loginAPI(data.email, data.password)
-            dispatch(setAccessToken(access_token))
-            reset()
-            navigate('/')
-        } catch (error) {
 
+            const dataAPI = await recoveryPassAPI(data.email)
+            console.log(dataAPI)
+            dispath(setEmailRecoveryPass(dataAPI.emailRecoveryPass))
+            dispath(setTokenRecoveryPass(dataAPI.tokenRecoveryPass))
+            setmessageModalRef(`Ya se envio el correo de recuperacion a este correo ${data.email}`)
+            settypeModalRef('success')
+            modalAlertRef.current?.showModal()
+            reset()
+
+        } catch (error) {
+            settypeModalRef('error')
             if (error instanceof ExceptionNestjs) {
-                if (error.message === 'error_credentials') {
-                    setmessageModalRef(`Email o contraseña son incorrectas`)
-                    settypeModalRef('error')
-                    modalAlertRef.current?.showModal()
+                if (error.message === 'email_no_exist') {
+                    setmessageModalRef(`El email de recuperación necesita haberse registrado previamente`)
                 }
             }
             else {
-                console.error(error)
+                setmessageModalRef(`Algo salio mal`)
             }
+            console.log('aqui')
+            modalAlertRef.current?.showModal()
         }
         finally {
             setIsLoading(false)

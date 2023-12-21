@@ -7,4 +7,5 @@ export * from './getProductsAPI.ts'
 export * from './getProductsBySectionAPI.ts'
 export * from './getSectionsAPI.ts'
 export * from './getProductByIdAPI.ts'
+export * from './addProductToSCart.ts'
 

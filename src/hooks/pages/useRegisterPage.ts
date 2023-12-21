@@ -1,10 +1,10 @@
 import { useRef, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { TypesAlerts } from "../components/types"
-import { registerAPI } from "../API"
-import { ExceptionNestjs } from "../API/errors"
+import { TypesAlerts } from "../../components/types"
+import { registerAPI } from "../../API"
+import { ExceptionNestjs } from "../../API/errors"
 import { useDispatch } from "react-redux"
-import { setAccessToken } from "../store"
+import { setAccessToken } from "../../store"
 import { useNavigate } from "react-router-dom"
 
 

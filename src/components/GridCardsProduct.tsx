@@ -7,10 +7,6 @@ export const GridCardsProduct = () => {
 
     const products: IProductsReponse[] = useLoaderData() as IProductsReponse[]
 
-
-    console.log(products, 'desde grid card products')
-
-
     return (
         <>
             <section
@@ -22,6 +18,7 @@ export const GridCardsProduct = () => {
                             <CardProduct
                                 key={product.id}
                                 {...product}
+
                             />
                         )
                     })

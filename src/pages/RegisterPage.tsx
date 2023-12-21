@@ -1,7 +1,7 @@
 
 import { Link } from "react-router-dom"
 import { ModalAlert } from "../components"
-import { useRegisterPage } from "../hooks"
+import { useRegisterPage } from "../hooks/pages"
 
 export const RegisterPage = () => {
 

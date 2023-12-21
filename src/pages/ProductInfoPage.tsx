@@ -1,5 +1,6 @@
 import { useLoaderData } from "react-router-dom"
 import { IProductsReponse } from "../API"
+import { CardProductView } from "../components"
 
 
 export const ProductInfoPage = () => {
@@ -7,7 +8,16 @@ export const ProductInfoPage = () => {
     console.log(product)
     return (
         <>
-            <div>ProductInfoPage</div>
+            <main
+                className="min-h-screen flex flex-col justify-center items-center"
+            >
+                <section className="w-11/12 sm:w-10/12 md:w-7/12 lg:w-[36rem] pt-12">
+                    <CardProductView
+                        {...product}
+
+                    />
+                </section>
+            </main>
         </>
     )
 }

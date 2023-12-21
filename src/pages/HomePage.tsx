@@ -1,42 +1,33 @@
 import { useEffect } from "react"
 import { Outlet } from "react-router-dom"
-import { useSelector } from "react-redux"
-import { RootState } from "../store"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState, setProfile } from "../store"
 import { getUserAPI } from "../API"
-import { Carousel, Navbar } from "../components"
+import { Navbar } from "../components"
 
 
 export const HomePage = () => {
 
-
-
     const auth = useSelector((state: RootState) => state.auth)
 
+    const dispatch = useDispatch()
 
     useEffect(() => {
         getUserAPI(auth.access_token)
             .then(data => {
-                console.log(data)
+                dispatch(setProfile({
+                    profile: data
+                }))
             })
             .catch(err => {
                 console.log(err)
             })
 
-    }, [auth])
+    }, [auth, dispatch])
 
 
     useEffect(() => {
-        /* getProductsAPI()
-            .then(newProducts => {
-                setProducts(newProducts)
-            })
-            .catch(err => {
-                console.error(err)
-            }) */
-
-
-
-
+        document.title = `Home`
     }, [])
 
 

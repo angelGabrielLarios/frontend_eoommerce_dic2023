@@ -1,7 +1,7 @@
 
 import { Link } from "react-router-dom"
 import { ModalAlert } from "../components"
-import { useLoginPage } from "../hooks"
+import { useLoginPage } from "../hooks/pages"
 
 export const LoginPage = () => {
 

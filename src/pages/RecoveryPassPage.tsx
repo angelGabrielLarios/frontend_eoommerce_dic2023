@@ -1,7 +1,7 @@
 
 import { Link } from "react-router-dom"
 import { ModalAlert } from "../components"
-import { useRecoveryPassPage } from "../hooks"
+import { useRecoveryPassPage } from "../hooks/pages"
 
 export const RecoveryPassPage = () => {
 

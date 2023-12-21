@@ -1,8 +1,12 @@
 
 
 import { ExceptionNestjs, IExceptionNestJs } from "./errors"
-import { ILoginResponse } from "./interfaces"
+
 import { urlAPI } from "./url"
+
+export interface ILoginResponse {
+    access_token: string
+}
 export const loginAPI = async (email: string, password: string) => {
 
     const response = await fetch(`${urlAPI}/auth/login`, {

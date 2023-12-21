@@ -1,8 +1,9 @@
 import { PrivateRoute } from "./PrivateRoute.tsx";
 import { Navigate, createBrowserRouter } from "react-router-dom";
-import { HomePage, LoginPage, ProductInfoPage, RecoveryPassPage, RegisterPage, RestorePassPage } from "../pages";
+import { CartPage, HomePage, LoginPage, ProductInfoPage, RecoveryPassPage, RegisterPage, RestorePassPage } from "../pages";
 import { getProductsAPI, getProductsByIdAPI, getProductsBySectionAPI } from "../API";
 import { GridCardsProduct } from "../components"
+import { CosaPage } from "../pages/CosaPage.tsx";
 
 export const router = createBrowserRouter([
     {
@@ -56,16 +57,31 @@ export const router = createBrowserRouter([
         element: <LoginPage />
     },
     {
-        path: 'auth/register',
+        path: '/auth/register',
         element: <RegisterPage />
     },
     {
-        path: 'auth/recovery-password',
+        path: '/auth/recovery-password',
         element: <RecoveryPassPage />
     },
     {
-        path: 'auth/restore-password',
+        path: '/auth/restore-password',
         element: <RestorePassPage />
+    },
+    {
+        path: `auth/template-email`,
+        element:
+            <>
+
+                <CosaPage />
+
+            </>
+    },
+    {
+        path: `/cart`,
+        element: <PrivateRoute>
+            <CartPage />
+        </PrivateRoute>
     }
 
 ])

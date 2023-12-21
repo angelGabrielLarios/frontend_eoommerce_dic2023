@@ -1,8 +1,11 @@
 
 
+import { ILoginResponse } from "."
 import { ExceptionNestjs, IExceptionNestJs } from "./errors"
-import { ILoginResponse } from "./interfaces"
+
 import { urlAPI } from "./url"
+
+
 export const registerAPI = async (firstName: string, lastName: string, phone: string, email: string, password: string) => {
 
 

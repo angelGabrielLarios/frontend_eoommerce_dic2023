@@ -1,8 +1,14 @@
 
 
 import { ExceptionNestjs, IExceptionNestJs } from "./errors"
-import { IRecoveryPass } from "./interfaces"
+
 import { urlAPI } from "./url"
+
+
+export interface IRecoveryPass {
+    tokenRecoveryPass: string
+    emailRecoveryPass: string
+}
 export const recoveryPassAPI = async (email: string,) => {
 
 

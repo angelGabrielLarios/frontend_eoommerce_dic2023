@@ -1,21 +1,23 @@
 import { useSelector } from "react-redux"
-import { IProductsReponse, getSubtotalByProduct } from "../API"
+import { IProductsReponse, deleteOneCartDetailsAPI, getSubtotalByProduct } from "../API"
 import { convertToCurrency } from "../helpers"
 import { RootState } from "../store"
-import { SetStateAction, useEffect, useState } from "react"
+import { Dispatch, MutableRefObject, SetStateAction, useEffect, useState } from "react"
 import { updateCartDetailsQuantityAPI } from "../API/updateCartDetailsQuantityAPI"
-import { Dispatch } from "@reduxjs/toolkit"
+
 
 
 interface Propss {
     product: IProductsReponse,
     id: string
     quantity: number
-    onClickConfirmDelete(): void
     setOnClickConfirmDelete: Dispatch<SetStateAction<() => void>>
+    updateCartProducts(): void
+    modalConfirmDeleteRef: MutableRefObject<HTMLDialogElement | null>
+    updateFinalCartDetails(): void
 }
 
-export const CartCardProduct = ({ product, id, quantity, setOnClickConfirmDelete }: Propss) => {
+export const CartCardProduct = ({ product, id, quantity, setOnClickConfirmDelete, updateCartProducts, modalConfirmDeleteRef, updateFinalCartDetails }: Propss) => {
 
     const [quantityState, setQuantityState] = useState<number>(quantity)
 
@@ -65,11 +67,12 @@ export const CartCardProduct = ({ product, id, quantity, setOnClickConfirmDelete
                         <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
                             <div className="flex items-stretch border-gray-100">
                                 <button
-                                    className="btn btn-sm rounded-none rounded-l-lg btn-primary"
+                                    className="btn btn-sm rounded-none rounded-l-lg btn-primary "
                                     onClick={() => {
-                                        onClickUpdateQuantity({ idCartDetails: id, quantity: quantityState + 1 })
+                                        onClickUpdateQuantity({ idCartDetails: id, quantity: quantityState !== 1 ? quantityState - 1 : quantityState })
+                                        updateFinalCartDetails()
                                     }}
-                                >+</button>
+                                >-</button>
                                 <input
                                     className="input input-sm rounded-none w-16 h-auto"
                                     type="number"
@@ -77,23 +80,32 @@ export const CartCardProduct = ({ product, id, quantity, setOnClickConfirmDelete
                                     min={1}
                                     onChange={() => { }}
                                 />
+
+
                                 <button
-                                    className="btn btn-sm rounded-none rounded-r-lg btn-primary "
+                                    className="btn btn-sm rounded-none rounded-r-lg btn-primary"
                                     onClick={() => {
-                                        onClickUpdateQuantity({ idCartDetails: id, quantity: quantityState !== 1 ? quantityState - 1 : quantityState })
+                                        onClickUpdateQuantity({ idCartDetails: id, quantity: quantityState + 1 })
+                                        updateFinalCartDetails()
                                     }}
-                                >-</button>
+                                >+</button>
                             </div>
                             <div className="flex items-center space-x-4">
                                 <p className="text-sm text-base-content">{convertToCurrency({ amount: subTotalByProduct, locales: 'es-MX', currencyCode: 'MXN' })}</p>
                                 <button onClick={() => {
-                                    setOnClickConfirmDelete(async () => {
+
+                                    setOnClickConfirmDelete(() => async () => {
                                         try {
+                                            await deleteOneCartDetailsAPI({ id })
+                                            updateCartProducts()
+                                            updateFinalCartDetails()
 
                                         } catch (error) {
                                             console.error(error)
                                         }
                                     })
+
+                                    modalConfirmDeleteRef.current?.showModal()
                                 }}>
                                     <svg
 

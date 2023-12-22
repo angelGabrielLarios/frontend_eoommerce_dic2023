@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react"
 import { CartCardProduct, ConfirmDeleteModal } from "../components"
-import { ICartDetailsRes, getCartProductsByIdShoppingCartAPI } from "../API";
+import { ICartDetailsRes, getCartProductsByIdShoppingCartAPI, getTotalCartDetailsByIdSC } from "../API";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { convertToCurrency } from "../helpers";
 
 export const CartPage = () => {
 
@@ -12,19 +13,27 @@ export const CartPage = () => {
 
     const [cartProducts, setcartProducts] = useState<ICartDetailsRes[] | []>([])
 
+    const [totalFinalState, setTotalFinalState] = useState<number>(0)
+
     useEffect(() => {
         document.title = `Carrito de compras`;
 
-        modalConfirDeleteRef.current?.showModal();
+
         (async () => {
             const cartProducts = await getCartProductsByIdShoppingCartAPI({ idShoppingCart })
             setcartProducts(cartProducts)
         })();
+
+
+        (async () => {
+            const dataAPI = await getTotalCartDetailsByIdSC({ idShoppingCart })
+            setTotalFinalState(dataAPI.total)
+        })();
     }, [idShoppingCart])
 
-    const modalConfirDeleteRef = useRef<HTMLDialogElement | null>(null)
+    const modalConfirmDeleteRef = useRef<HTMLDialogElement | null>(null)
 
-    const [onClickConfirmDelete, setOnClickConfirmDelete] = useState<() => void>(() => { })
+    const [onClickConfirmDelete, setOnClickConfirmDelete] = useState<() => void>(() => { console.log('inicial') })
 
     return (
         <>
@@ -46,8 +55,18 @@ export const CartPage = () => {
                                         product={product}
                                         id={id}
                                         quantity={quantity}
-                                        onClickConfirmDelete={onClickConfirmDelete}
                                         setOnClickConfirmDelete={setOnClickConfirmDelete}
+                                        updateCartProducts={async () => {
+                                            const cartProducts = await getCartProductsByIdShoppingCartAPI({ idShoppingCart })
+                                            setcartProducts(cartProducts)
+                                        }}
+                                        modalConfirmDeleteRef={modalConfirmDeleteRef}
+                                        updateFinalCartDetails={
+                                            async () => {
+                                                const dataAPI = await getTotalCartDetailsByIdSC({ idShoppingCart })
+                                                setTotalFinalState(dataAPI.total)
+                                            }
+                                        }
                                     />
                                 )
                             })
@@ -57,18 +76,17 @@ export const CartPage = () => {
                     {/* Sub total */}
                     <div className="mt-6 h-full rounded-lg border border-primary bg-base-300 p-6 shadow-md md:mt-0 md:w-1/3 text-base-content">
                         <div className="mb-2 flex justify-between">
-                            <p className="">Subtotal</p>
-                            <p className="">$129.99</p>
+                            <p className="">Producto(s):</p>
+                            <p className="">{cartProducts.length}</p>
                         </div>
-                        <div className="flex justify-between">
-                            <p className="">Shipping</p>
-                            <p className="">$4.99</p>
-                        </div>
+
                         <hr className="my-4" />
                         <div className="flex justify-between">
                             <p className="text-lg font-bold">Total</p>
                             <div className="">
-                                <p className="mb-1 text-lg font-bold">$134.98 USD</p>
+                                <p className="mb-1 text-lg font-bold">{
+                                    convertToCurrency({ amount: totalFinalState, currencyCode: 'MXN', locales: 'es-MX' })
+                                }</p>
 
                             </div>
                         </div>
@@ -80,7 +98,7 @@ export const CartPage = () => {
             </div>
 
             <ConfirmDeleteModal
-                modalConfirDeleteRef={modalConfirDeleteRef}
+                modalConfirmDeleteRef={modalConfirmDeleteRef}
                 text="¿Esta seguro de eliminar el producto del carrito?"
                 onClickConfirmDelete={onClickConfirmDelete}
             />

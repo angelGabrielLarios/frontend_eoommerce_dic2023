@@ -25,7 +25,6 @@ export const CardProductView = ({ name, price, id, imageURL, section, descriptio
         try {
             setIsLoading(true)
             const dataAPI = await addProductToCart({ idUser, idProduct })
-            console.log(dataAPI)
             dispatch(setIdShoppingCart({ idShoppingCart: dataAPI.shoppingCart.id }))
 
             toast(

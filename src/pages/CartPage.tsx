@@ -1,11 +1,31 @@
-import { useEffect } from "react"
-import { CartCardProduct } from "../components"
+import { useEffect, useRef, useState } from "react"
+import { CartCardProduct, ConfirmDeleteModal } from "../components"
+import { ICartDetailsRes, getCartProductsByIdShoppingCartAPI } from "../API";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 export const CartPage = () => {
 
+
+    const { idShoppingCart } = useSelector((state: RootState) => state.auth)
+
+
+    const [cartProducts, setcartProducts] = useState<ICartDetailsRes[] | []>([])
+
     useEffect(() => {
-        document.title = `Carrito de compras`
-    }, [])
+        document.title = `Carrito de compras`;
+
+        modalConfirDeleteRef.current?.showModal();
+        (async () => {
+            const cartProducts = await getCartProductsByIdShoppingCartAPI({ idShoppingCart })
+            setcartProducts(cartProducts)
+        })();
+    }, [idShoppingCart])
+
+    const modalConfirDeleteRef = useRef<HTMLDialogElement | null>(null)
+
+    const [onClickConfirmDelete, setOnClickConfirmDelete] = useState<() => void>(() => { })
+
     return (
         <>
             <div className="h-screen bg-base-100 pt-10">
@@ -16,30 +36,22 @@ export const CartPage = () => {
                 </h1>
                 <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
                     <div className="rounded-lg md:w-2/3">
-                        <CartCardProduct
-                            name="WD 4TB Gaming Drive Works with Playstation 4 Portable External Hard Drive"
-                            amount={50}
-                            description="angel"
-                            id="sd"
-                            imageURL="asd"
+                        {
+                            cartProducts?.map(cartProduct => {
+                                const { product, id, quantity } = cartProduct
+                                return (
 
-                            price={10}
-                            section={{ name: 'hola' }}
-
-
-                        />
-                        <CartCardProduct
-                            name="WD 2TB Elements Portable External Hard Drive - USB 3.0"
-                            amount={50}
-                            description="angel"
-                            id="sd"
-                            imageURL="asd"
-
-                            price={10}
-                            section={{ name: 'hola' }}
-
-
-                        />
+                                    <CartCardProduct
+                                        key={id}
+                                        product={product}
+                                        id={id}
+                                        quantity={quantity}
+                                        onClickConfirmDelete={onClickConfirmDelete}
+                                        setOnClickConfirmDelete={setOnClickConfirmDelete}
+                                    />
+                                )
+                            })
+                        }
 
                     </div>
                     {/* Sub total */}
@@ -67,6 +79,11 @@ export const CartPage = () => {
                 </div>
             </div>
 
+            <ConfirmDeleteModal
+                modalConfirDeleteRef={modalConfirDeleteRef}
+                text="¿Esta seguro de eliminar el producto del carrito?"
+                onClickConfirmDelete={onClickConfirmDelete}
+            />
         </>
     )
 }

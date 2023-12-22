@@ -22,7 +22,7 @@ export const CardProduct = ({ name, price, id, imageURL, section }: Props) => {
 
                     <h2 className="card-title text-base leading-normal truncate h-12">
                         {name}
-                    </h2> : null
+                    </h2>
 
 
                     <p className="badge badge-secondary">{convertToCurrency({ amount: price, locales: 'es-MX', currencyCode: 'MXN' })}</p>

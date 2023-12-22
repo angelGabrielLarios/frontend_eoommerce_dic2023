@@ -10,7 +10,8 @@ export const GridCardsProduct = () => {
     return (
         <>
             <section
-                className="px-4 sm:px-8 md:px-10 lg:px-12 grid items-start grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-4"
+                className="px-4 sm:px-8 md:px-10 lg:px-12 grid items-start grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 
+                gap-4"
             >
                 {
                     products?.map(product => {

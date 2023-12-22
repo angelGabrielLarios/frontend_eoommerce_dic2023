@@ -10,7 +10,7 @@ interface Props {
 }
 
 
-export interface IShoppingCartRes {
+export interface ICartDetailsRes {
     id: string;
     quantity: number;
     status: string;
@@ -39,7 +39,7 @@ export const addProductToCart = async (pros: Props) => {
         throw new ExceptionNestjs(data)
     }
 
-    const data: IShoppingCartRes = await response.json() as IShoppingCartRes
+    const data: ICartDetailsRes = await response.json() as ICartDetailsRes
     return data
 
 

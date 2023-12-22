@@ -8,4 +8,5 @@ export * from './getProductsBySectionAPI.ts'
 export * from './getSectionsAPI.ts'
 export * from './getProductByIdAPI.ts'
 export * from './addProductToSCart.ts'
-
+export * from './getCartProductsByIdShoppingCartAPI.ts'
+export * from './getSubtotalByProductAPI.ts'

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { TypesAlerts } from "../../components/types"
 import { registerAPI } from "../../API"
@@ -33,6 +33,11 @@ export const useRegisterPage = () => {
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
+
+
+    useEffect(() => {
+        document.title = 'Registrarse'
+    }, [])
 
     const onSubmit: SubmitHandler<IFormInputs> = async (data: IFormInputs) => {
 

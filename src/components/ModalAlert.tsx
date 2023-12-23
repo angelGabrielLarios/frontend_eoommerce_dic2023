@@ -43,7 +43,7 @@ export const ModalAlert = ({ message, modalRef, type }: Props) => {
                     <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                 </form>
 
-                <h3 className={`font-bold text-center text-base ${type === "error" ? 'text-error' : 'text-success'}`}>{message}</h3>
+                <h3 className={`font-bold text-center text-xs sm:text-sm md:text-base ${type === "error" ? 'text-error' : 'text-success'}`}>{message}</h3>
 
             </section>
         </dialog>

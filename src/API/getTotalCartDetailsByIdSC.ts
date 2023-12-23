@@ -16,6 +16,7 @@ export const getTotalCartDetailsByIdSC = async ({ idShoppingCart }: { idShopping
     }
 
     const data: ITotalFinal = await response.json() as ITotalFinal
+    console.log(data)
     return data
 
 

@@ -25,7 +25,6 @@ const initialState: AuthState = JSON.parse(localStorage.getItem(nameApp) || `nul
     access_token: ``,
     idShoppingCart: ``,
     emailRecoveryPass: ``,
-    tokenRecoveryPass: ``,
     profile: null
 }
 
@@ -42,10 +41,7 @@ export const authSlice = createSlice({
             state.emailRecoveryPass = action.payload
             localStorage.setItem(nameApp, JSON.stringify(state))
         },
-        setTokenRecoveryPass: (state, action: PayloadAction<string>) => {
-            state.tokenRecoveryPass = action.payload
-            localStorage.setItem(nameApp, JSON.stringify(state))
-        },
+
         setIdShoppingCart: (state, action: PayloadAction<{ idShoppingCart: string }>) => {
             state.idShoppingCart = action.payload.idShoppingCart
             localStorage.setItem(nameApp, JSON.stringify(state))
@@ -58,6 +54,6 @@ export const authSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setAccessToken, setEmailRecoveryPass, setTokenRecoveryPass, setIdShoppingCart, setProfile } = authSlice.actions
+export const { setAccessToken, setEmailRecoveryPass, setIdShoppingCart, setProfile } = authSlice.actions
 
 export const authReducer = authSlice.reducer

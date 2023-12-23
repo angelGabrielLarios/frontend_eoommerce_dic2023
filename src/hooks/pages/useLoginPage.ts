@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { TypesAlerts } from "../../components/types"
 import { loginAPI } from "../../API"
@@ -16,6 +16,8 @@ export const useLoginPage = () => {
 
     const { register, reset, handleSubmit, formState: { errors } } = useForm<IFormInputs>()
 
+
+
     const [isLoading, setIsLoading] = useState(false)
 
     const [typeModalRef, settypeModalRef] = useState<TypesAlerts | null>(null)
@@ -29,6 +31,10 @@ export const useLoginPage = () => {
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        document.title = 'Iniciar Sesión'
+    }, [])
 
     const onSubmit: SubmitHandler<IFormInputs> = async (data: IFormInputs) => {
 
@@ -66,6 +72,7 @@ export const useLoginPage = () => {
         typeModalRef,
         messageModalRef,
         errors,
-        modalAlertRef
+        modalAlertRef,
+
     }
 }

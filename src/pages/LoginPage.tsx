@@ -2,22 +2,25 @@
 import { Link } from "react-router-dom"
 import { ModalAlert } from "../components"
 import { useLoginPage } from "../hooks/pages"
+import { useMobileResolution } from "../hooks"
 
 export const LoginPage = () => {
 
     const { errors, handleSubmit, isLoading, isShowPassword, messageModalRef, onSubmit, register, setIsShowPassword, typeModalRef, modalAlertRef } = useLoginPage()
 
-    console.log(errors)
+
+    const { isMobile } = useMobileResolution()
+
     return (
         <>
-            <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-base-200 to-primary">
+            <main className="min-h-screen flex flex-col items-center justify-start md:justify-center bg-gradient-to-r from-base-200 to-primary">
                 <form
-                    className="p-6 shadow-lg shadow-base-200 rounded-md bg-base-200 w-11/12 md:w-8/12 lg:w-[40rem]"
+                    className="mt-10 md:mt-0 p-6 shadow-lg shadow-base-200 rounded-md bg-base-200 w-11/12 md:w-8/12 lg:w-[40rem]"
                     onSubmit={handleSubmit(onSubmit)}
                     autoComplete="off"
                 >
                     <h1
-                        className="text-primary font-bold text-4xl mb-6 text-center font-header"
+                        className="text-primary font-bold text-xl sm:text-2xl md:3xl lg:text-4xl mb-6 text-center font-header"
                     >
                         Iniciar sesion
                     </h1>
@@ -28,7 +31,7 @@ export const LoginPage = () => {
                             type="email"
                             placeholder="Correo Electrónico:"
                             className={
-                                `input input-bordered w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.email ? 'input-error' : ''}`
+                                `input input-bordered ${isMobile ? 'input-sm' : ''} w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.email ? 'input-error' : ''}`
                             }
                             {...register('email', {
                                 required: {
@@ -53,7 +56,7 @@ export const LoginPage = () => {
                             type={isShowPassword ? 'text' : 'password'}
                             placeholder="Contraseña"
                             className={
-                                `input input-bordered w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.password ? 'input-error' : ''}`
+                                `input input-bordered ${isMobile ? 'input-sm' : ''} w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.password ? 'input-error' : ''}`
                             }
                             {...register('password', {
                                 required: {
@@ -74,7 +77,7 @@ export const LoginPage = () => {
                         }
 
                         <label className="cursor-pointer label">
-                            <span className="label-text text-sm">Mostar contraseña</span>
+                            <span className="label-text text-xs sm:text-sm">Mostar contraseña</span>
                             <input
                                 type="checkbox"
                                 className="toggle toggle-primary"
@@ -87,26 +90,27 @@ export const LoginPage = () => {
                         <button
                             disabled={isLoading}
                             type="submit"
-                            className="btn btn-primary w-full">
+                            className={`btn ${isMobile ? 'btn-sm' : ''} btn-primary w-full `}
+                        >
                             Iniciar Sesión
                             {isLoading ? <span className="loading loading-dots loading-xs"></span> : null}
 
                         </button>
 
                         <p
-                            className="text-center text-sm"
+                            className="text-center text-xs sm:text-sm"
                         >
                             ¿No tiene una cuenta?
                             <Link
                                 to={'/auth/register'}
-                                className="text-primary ml-1 font-bold"
+                                className="text-primary ml-1 font-bold "
                             >
                                 Registrarse
                             </Link>
                         </p>
 
                         <p
-                            className="text-center text-sm"
+                            className="text-center text-xs sm:text-sm"
                         >
                             ¿No te acuerdas de tu contraseña?
                             <Link

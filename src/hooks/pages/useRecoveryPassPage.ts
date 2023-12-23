@@ -1,10 +1,10 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { TypesAlerts } from "../../components/types"
 import { recoveryPassAPI } from "../../API"
 import { ExceptionNestjs } from "../../API/errors"
 import { useDispatch } from "react-redux"
-import { setEmailRecoveryPass, setTokenRecoveryPass } from "../../store"
+import { setEmailRecoveryPass } from "../../store"
 
 
 
@@ -27,6 +27,10 @@ export const useRecoveryPassPage = () => {
 
     const dispath = useDispatch()
 
+    useEffect(() => {
+        document.title = 'Enviar correo de recuperación'
+    }, [])
+
     const onSubmit: SubmitHandler<IFormInputs> = async (data: IFormInputs) => {
 
         setIsLoading(true)
@@ -35,16 +39,16 @@ export const useRecoveryPassPage = () => {
             const dataAPI = await recoveryPassAPI(data.email)
             console.log(dataAPI)
             dispath(setEmailRecoveryPass(dataAPI.emailRecoveryPass))
-            dispath(setTokenRecoveryPass(dataAPI.tokenRecoveryPass))
             setmessageModalRef(`Ya se envio el correo de recuperacion a este correo ${data.email}`)
             settypeModalRef('success')
             modalAlertRef.current?.showModal()
             reset()
 
         } catch (error) {
+            console.log(error)
             settypeModalRef('error')
             if (error instanceof ExceptionNestjs) {
-                if (error.message === 'email_no_exist') {
+                if (error.message === 'email_does_not_exist') {
                     setmessageModalRef(`El email de recuperación necesita haberse registrado previamente`)
                 }
             }
@@ -52,11 +56,14 @@ export const useRecoveryPassPage = () => {
                 setmessageModalRef(`Algo salio mal`)
             }
             console.log('aqui')
-            modalAlertRef.current?.showModal()
+
         }
         finally {
             setIsLoading(false)
+
         }
+
+        modalAlertRef.current?.showModal()
     }
 
     return {

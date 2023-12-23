@@ -1,6 +1,6 @@
 import { PrivateRoute } from "./PrivateRoute.tsx";
 import { Navigate, createBrowserRouter } from "react-router-dom";
-import { CartPage, HomePage, LoginPage, ProductInfoPage, RecoveryPassPage, RegisterPage, RestorePassPage } from "../pages";
+import { CartPage, ErrorInvalidTokenPage, HomePage, LoginPage, ProductInfoPage, RecoveryPassPage, RegisterPage, RestorePassPage } from "../pages";
 import { getProductsAPI, getProductsByIdAPI, getProductsBySectionAPI } from "../API";
 import { GridCardsProduct } from "../components"
 import { CosaPage } from "../pages/CosaPage.tsx";
@@ -67,6 +67,10 @@ export const router = createBrowserRouter([
     {
         path: '/auth/restore-password',
         element: <RestorePassPage />
+    },
+    {
+        path: '/auth/error-invalid-token',
+        element: <ErrorInvalidTokenPage />
     },
     {
         path: `auth/template-email`,

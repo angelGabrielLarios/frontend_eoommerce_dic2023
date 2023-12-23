@@ -37,14 +37,23 @@ export const CartPage = () => {
 
     return (
         <>
-            <div className="h-screen bg-base-100 pt-10">
+            <section className="h-screen bg-base-100 pt-10">
                 <h1
-                    className="text-primary font-bold text-4xl mb-6 text-center font-header"
+                    className="text-primary font-bold text-xl md:text-2xl lg:text-3xl mb-6 text-center font-header"
                 >
                     Tu carrito
                 </h1>
-                <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
-                    <div className="rounded-lg md:w-2/3">
+                <article className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
+                    <section className="rounded-lg md:w-2/3">
+
+                        {
+                            cartProducts.length === 0
+                                ? <article className="bg-base-300 text-base-content text-xs sm:text-sm h-[10rem] flex flex-col items-center justify-center font-bold rounded-lg">
+                                    No tienes productos guardados en el carrito, visita la tienda para ver que te podría gustar
+                                </article>
+                                : null
+                        }
+
                         {
                             cartProducts?.map(cartProduct => {
                                 const { product, id, quantity } = cartProduct
@@ -64,6 +73,7 @@ export const CartPage = () => {
                                         updateFinalCartDetails={
                                             async () => {
                                                 const dataAPI = await getTotalCartDetailsByIdSC({ idShoppingCart })
+                                                console.log(dataAPI)
                                                 setTotalFinalState(dataAPI.total)
                                             }
                                         }
@@ -72,30 +82,33 @@ export const CartPage = () => {
                             })
                         }
 
-                    </div>
+                    </section>
                     {/* Sub total */}
                     <div className="mt-6 h-full rounded-lg border border-primary bg-base-300 p-6 shadow-md md:mt-0 md:w-1/3 text-base-content">
-                        <div className="mb-2 flex justify-between">
+                        <div className="mb-2 flex justify-between text-xs sm:text-sm">
                             <p className="">Producto(s):</p>
                             <p className="">{cartProducts.length}</p>
                         </div>
 
                         <hr className="my-4" />
-                        <div className="flex justify-between">
-                            <p className="text-lg font-bold">Total</p>
+                        <article className="flex justify-between">
+                            <p className="text-xs sm:text-sm font-bold">Total</p>
                             <div className="">
-                                <p className="mb-1 text-lg font-bold">{
+                                <p className="mb-1 text-xs sm:text-sm font-bold">{
                                     convertToCurrency({ amount: totalFinalState, currencyCode: 'MXN', locales: 'es-MX' })
                                 }</p>
 
                             </div>
-                        </div>
-                        <button className="btn btn-secondary w-full">
+                        </article>
+                        <button
+                            disabled={cartProducts.length === 0}
+                            className="btn btn-secondary w-full"
+                        >
                             Pagar
                         </button>
                     </div>
-                </div>
-            </div>
+                </article>
+            </section>
 
             <ConfirmDeleteModal
                 modalConfirmDeleteRef={modalConfirmDeleteRef}

@@ -1,21 +1,21 @@
 import { ModalAlert } from "../components"
-import { useRestorePassPage } from "../hooks/pages"
+import { useRestorePassPage, useMobileResolution } from "../hooks/"
 
 export const RestorePassPage = () => {
 
     const { errors, handleSubmit, isLoading, isShowPassword, messageModalRef, onSubmit, register, setIsShowPassword, typeModalRef, modalAlertRef } = useRestorePassPage()
 
-    console.log(errors)
+    const { isMobile } = useMobileResolution()
     return (
         <>
-            <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-base-200 to-primary">
+            <main className="min-h-screen flex flex-col items-center justify-start md:justify-center bg-gradient-to-r from-base-200 to-primary">
                 <form
-                    className="p-6 shadow-lg shadow-base-200 rounded-md bg-base-200 w-11/12 md:w-8/12 lg:w-[40rem]"
+                    className="mt-10 md:mt-0 p-6 shadow-lg shadow-base-200 rounded-md bg-base-200 w-11/12 md:w-8/12 lg:w-[40rem]"
                     onSubmit={handleSubmit(onSubmit)}
                     autoComplete="off"
                 >
                     <h1
-                        className="text-primary font-bold text-4xl mb-6 text-center font-header"
+                        className="text-primary font-bold text-xl sm:text-2xl md:3xl lg:text-4xl mb-6 text-center font-header"
                     >
                         Reestablecer Contraseña
                     </h1>
@@ -26,7 +26,7 @@ export const RestorePassPage = () => {
                             type={isShowPassword ? 'text' : 'password'}
                             placeholder="Contraseña:"
                             className={
-                                `input input-bordered w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.password ? 'input-error' : ''}`
+                                `input input-bordered ${isMobile ? 'input-sm' : ''} w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.password ? 'input-error' : ''}`
                             }
                             {...register('password', {
                                 required: {
@@ -48,10 +48,10 @@ export const RestorePassPage = () => {
 
                         <input
                             disabled={isLoading}
-                            type={isShowPassword ? 'text' : 'password'}
+                            type="password"
                             placeholder="Confirmar contraseña"
                             className={
-                                `input input-bordered w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.confirmPassword ? 'input-error' : ''}`
+                                `input input-bordered ${isMobile ? 'input-sm' : ''} w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.confirmPassword ? 'input-error' : ''}`
                             }
                             {...register('confirmPassword', {
                                 required: {
@@ -72,7 +72,7 @@ export const RestorePassPage = () => {
                         }
 
                         <label className="cursor-pointer label">
-                            <span className="label-text text-sm">Mostar contraseña</span>
+                            <span className="label-text text-xs sm:text-sm">Mostar contraseña</span>
                             <input
                                 type="checkbox"
                                 className="toggle toggle-primary"
@@ -85,8 +85,8 @@ export const RestorePassPage = () => {
                         <button
                             disabled={isLoading}
                             type="submit"
-                            className="btn btn-primary w-full">
-                            Iniciar Sesión
+                            className={`btn btn-primary ${isMobile ? 'btn-sm' : ''} w-full`}>
+                            Reestablecer contraseña
                             {isLoading ? <span className="loading loading-dots loading-xs"></span> : null}
 
                         </button>

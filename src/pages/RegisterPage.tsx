@@ -2,21 +2,24 @@
 import { Link } from "react-router-dom"
 import { ModalAlert } from "../components"
 import { useRegisterPage } from "../hooks/pages"
+import { useMobileResolution } from "../hooks"
 
 export const RegisterPage = () => {
 
     const { errors, handleSubmit, isLoading, isShowPassword, messageModalRef, onSubmit, register, setIsShowPassword, typeModalRef, modalAlertRef } = useRegisterPage()
 
+
+    const { isMobile } = useMobileResolution()
     return (
         <>
-            <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-base-200 to-primary">
+            <main className="min-h-screen flex flex-col items-center justify-start md:justify-center bg-gradient-to-r from-base-200 to-primary">
                 <form
-                    className="p-6 shadow-lg shadow-base-200 rounded-md bg-base-200 w-11/12 md:w-8/12 lg:w-[40rem]"
+                    className="mt-6 md:mt-0 p-6 shadow-lg shadow-base-200 rounded-md bg-base-200 w-11/12 md:w-8/12 lg:w-[40rem]"
                     onSubmit={handleSubmit(onSubmit)}
                     autoComplete="off"
                 >
                     <h1
-                        className="text-primary font-bold text-4xl mb-6 text-center font-header"
+                        className="text-primary font-bold text-xl sm:text-2xl md:3xl lg:text-4xl mb-6 text-center font-header"
                     >
                         Registrarse
                     </h1>
@@ -30,7 +33,7 @@ export const RegisterPage = () => {
                                     disabled={isLoading}
                                     type="text"
                                     placeholder="Nombre(s):"
-                                    className={`input input-bordered w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.firstName ? 'input-error' : ''}`}
+                                    className={`input input-bordered ${isMobile ? 'input-sm' : ''} w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.firstName ? 'input-error' : ''}`}
                                     {...register('firstName', {
                                         required: {
                                             value: true,
@@ -55,7 +58,7 @@ export const RegisterPage = () => {
                                     disabled={isLoading}
                                     type="text"
                                     placeholder="Apellido(s):"
-                                    className={`input input-bordered w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.lastName ? 'input-error' : ''}`}
+                                    className={`input input-bordered ${isMobile ? 'input-sm' : ''} w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.lastName ? 'input-error' : ''}`}
                                     {...register('lastName', {
                                         required: {
                                             value: true,
@@ -80,7 +83,7 @@ export const RegisterPage = () => {
                             disabled={isLoading}
                             type="text"
                             placeholder="Teléfono:"
-                            className={`input input-bordered w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.phone ? 'input-error' : ''}`}
+                            className={`input input-bordered ${isMobile ? 'input-sm' : ''} w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.phone ? 'input-error' : ''}`}
                             {...register('phone', {
                                 required: {
                                     value: true,
@@ -103,7 +106,7 @@ export const RegisterPage = () => {
                             disabled={isLoading}
                             type="email"
                             placeholder="Correo Electrónico:"
-                            className={`input input-bordered w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.email ? 'input-error' : ''}`}
+                            className={`input input-bordered ${isMobile ? 'input-sm' : ''} w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.email ? 'input-error' : ''}`}
                             {...register('email', {
                                 required: {
                                     value: true,
@@ -126,7 +129,7 @@ export const RegisterPage = () => {
                             disabled={isLoading}
                             type={isShowPassword ? 'text' : 'password'}
                             placeholder="Contraseña"
-                            className={`input input-bordered w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.password ? 'input-error' : ''}`}
+                            className={`input input-bordered ${isMobile ? 'input-sm' : ''} w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.password ? 'input-error' : ''}`}
                             {...register('password', {
                                 required: {
                                     value: true,
@@ -146,7 +149,7 @@ export const RegisterPage = () => {
                         }
 
                         <label className="cursor-pointer label">
-                            <span className="label-text text-xs">Mostar contraseña</span>
+                            <span className="label-text text-xs sm:text-sm">Mostar contraseña</span>
                             <input
                                 type="checkbox"
                                 className="toggle toggle-primary"
@@ -159,14 +162,15 @@ export const RegisterPage = () => {
                         <button
                             disabled={isLoading}
                             type="submit"
-                            className="btn btn-primary w-full">
+                            className={`btn ${isMobile ? 'btn-sm' : ''} btn-primary w-full`}
+                        >
                             Registrarse
                             {isLoading ? <span className="loading loading-dots loading-xs"></span> : null}
 
                         </button>
 
                         <p
-                            className="text-center text-sm"
+                            className="text-center text-xs sm:text-sm"
                         >
                             ¿Ya tienes una cuenta?
                             <Link

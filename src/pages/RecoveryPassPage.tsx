@@ -1,23 +1,23 @@
 
 import { Link } from "react-router-dom"
 import { ModalAlert } from "../components"
-import { useRecoveryPassPage } from "../hooks/pages"
+import { useMobileResolution, useRecoveryPassPage } from "../hooks"
 
 export const RecoveryPassPage = () => {
 
     const { errors, handleSubmit, isLoading, messageModalRef, onSubmit, register, typeModalRef, modalAlertRef } = useRecoveryPassPage()
 
-
+    const { isMobile } = useMobileResolution()
     return (
         <>
-            <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-base-200 to-primary">
+            <main className="min-h-screen flex flex-col items-center justify-start md:justify-center bg-gradient-to-r from-base-200 to-primary">
                 <form
-                    className="p-6 shadow-lg shadow-base-200 rounded-md bg-base-200 w-11/12 md:w-8/12 lg:w-[40rem]"
+                    className="mt-10 md:mt-0 p-6 shadow-lg shadow-base-200 rounded-md bg-base-200 w-11/12 md:w-8/12 lg:w-[40rem]"
                     onSubmit={handleSubmit(onSubmit)}
                     autoComplete="off"
                 >
                     <h1
-                        className="text-primary font-bold text-4xl mb-6 text-center font-header"
+                        className="text-primary font-bold text-xl sm:text-2xl md:3xl lg:text-4xl mb-6 text-center font-header"
                     >
                         Recuperar contraseña
                     </h1>
@@ -28,7 +28,7 @@ export const RecoveryPassPage = () => {
                             type="email"
                             placeholder="Correo Electrónico:"
                             className={
-                                `input input-bordered w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.email ? 'input-error' : ''}`
+                                `input input-bordered ${isMobile ? 'input-sm' : ''} w-full bg-inherit text-xs lg:text-sm placeholder:text-xs placeholder:lg:text-sm ${errors?.email ? 'input-error' : ''}`
                             }
                             {...register('email', {
                                 required: {
@@ -53,14 +53,15 @@ export const RecoveryPassPage = () => {
                         <button
                             disabled={isLoading}
                             type="submit"
-                            className="btn btn-primary w-full">
+                            className={`btn ${isMobile ? 'btn-sm' : ''} btn-primary w-full`}
+                        >
                             Recuperar Contraseña
                             {isLoading ? <span className="loading loading-dots loading-xs"></span> : null}
 
                         </button>
 
                         <p
-                            className="text-center text-sm"
+                            className="text-center text-xs sm:text-sm"
                         >
                             <Link
                                 to={'/auth/login'}
@@ -70,7 +71,7 @@ export const RecoveryPassPage = () => {
                             </Link>
                         </p>
                         <p
-                            className="text-center text-sm"
+                            className="text-center text-xs sm:text-sm"
                         >
 
                             <Link

@@ -41,6 +41,7 @@ export const CartCardProduct = ({ product, id, quantity, setOnClickConfirmDelete
         try {
             const dataAPI = await updateCartDetailsQuantityAPI({ idCartDetails, quantity })
             setQuantityState(dataAPI.quantity)
+            updateFinalCartDetails()
 
         } catch (error) {
             console.error(error)
@@ -70,7 +71,7 @@ export const CartCardProduct = ({ product, id, quantity, setOnClickConfirmDelete
                                     className="btn btn-sm rounded-none rounded-l-lg btn-primary "
                                     onClick={() => {
                                         onClickUpdateQuantity({ idCartDetails: id, quantity: quantityState !== 1 ? quantityState - 1 : quantityState })
-                                        updateFinalCartDetails()
+
                                     }}
                                 >-</button>
                                 <input
@@ -86,7 +87,7 @@ export const CartCardProduct = ({ product, id, quantity, setOnClickConfirmDelete
                                     className="btn btn-sm rounded-none rounded-r-lg btn-primary"
                                     onClick={() => {
                                         onClickUpdateQuantity({ idCartDetails: id, quantity: quantityState + 1 })
-                                        updateFinalCartDetails()
+
                                     }}
                                 >+</button>
                             </div>

@@ -6,7 +6,6 @@ import { urlAPI } from "./url"
 
 
 export interface IRecoveryPass {
-    tokenRecoveryPass: string
     emailRecoveryPass: string
 }
 export const recoveryPassAPI = async (email: string,) => {

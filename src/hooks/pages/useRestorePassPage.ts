@@ -1,9 +1,11 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { TypesAlerts } from "../../components/types"
 import { ExceptionNestjs } from "../../API/errors"
 import { useNavigate } from "react-router-dom"
-import { restorePasswordAPI } from "../../API"
+import { getIsValidateTokenAPI, restorePasswordAPI } from "../../API"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState, setEmailRecoveryPass } from "../../store"
 
 
 interface IFormInputs {
@@ -27,19 +29,61 @@ export const useRestorePassPage = () => {
 
     const navigate = useNavigate()
 
+    const { emailRecoveryPass } = useSelector((state: RootState) => state.auth)
+
+    const dispatch = useDispatch()
+
+    const tokenRef = useRef<string>(``)
+
+    useEffect(() => {
+
+        document.title = `Restablecer contraseña`
+
+        const urlCurrectly = new URL(location.href)
+        const params = new URLSearchParams(urlCurrectly.search);
+
+        tokenRef.current = params.get('token') || ``;
+
+        console.log(tokenRef.current);
+
+
+        (async () => {
+            const dataAPI = await getIsValidateTokenAPI({ token: tokenRef.current })
+            console.log(dataAPI)
+            if (!dataAPI.isValidateToken) {
+                navigate('/auth/error-invalid-token')
+                return
+            }
+        })();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     const onSubmit: SubmitHandler<IFormInputs> = async (data: IFormInputs) => {
 
+        if (data.password !== data.confirmPassword) {
+            settypeModalRef(`error`)
+            setmessageModalRef(`Las contraseñas no coinciden`)
+            modalAlertRef.current?.showModal()
+            return
+        }
         setIsLoading(true)
+        console.log(tokenRef.current)
         try {
-            const dataAPI = await restorePasswordAPI(data.password)
+            const dataAPI = await restorePasswordAPI({
+                email: emailRecoveryPass,
+                newPassword: data.password,
+                token: tokenRef.current
+            })
             console.log(dataAPI)
             reset()
-            navigate('/')
+            dispatch(setEmailRecoveryPass(``))
+            navigate('/auth/login')
         } catch (error) {
-
+            console.error(error)
             if (error instanceof ExceptionNestjs) {
-                if (error.message === 'error_credentials') {
-                    setmessageModalRef(`Email o contraseña son incorrectas`)
+                if (error.message === 'invalidate_token') {
+                    setmessageModalRef(`El token que ingreso no es el correcto vuelta a intentar a enviar el correo de recuperacion`)
                     settypeModalRef('error')
                     modalAlertRef.current?.showModal()
                 }

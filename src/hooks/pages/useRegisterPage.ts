@@ -14,11 +14,12 @@ interface IFormInputs {
     phone: string
     email: string
     password: string
+    address: string
 }
 export const useRegisterPage = () => {
 
 
-    const { register, reset, handleSubmit, formState: { errors } } = useForm<IFormInputs>()
+    const { register, reset, handleSubmit, formState: { errors }, control } = useForm<IFormInputs>()
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -44,11 +45,15 @@ export const useRegisterPage = () => {
         setIsLoading(true)
         try {
             const { access_token } = await registerAPI(
-                data.firstName,
-                data.lastName,
-                data.phone,
-                data.email,
-                data.password
+                {
+                    firstName: data.firstName.trim(),
+                    lastName: data.lastName.trim(),
+                    address: data.address.trim(),
+                    email: data.email.trim(),
+                    password: data.password.trim(),
+                    phone: data.phone.trim(),
+                }
+
             )
 
             dispatch(setAccessToken(access_token))
@@ -57,17 +62,25 @@ export const useRegisterPage = () => {
 
 
         } catch (error) {
+            console.error(error)
+            settypeModalRef('error')
             if (error instanceof ExceptionNestjs) {
                 if (error.message === 'already_email') {
                     setmessageModalRef(`El correo electronico que ingresate ya ha sido registrado`)
-                    settypeModalRef('error')
-                    modalAlertRef.current?.showModal()
+                }
+                else if (error.message === 'already_phone') {
+                    setmessageModalRef(`El numero telefonico que ingresate ya ha sido registrado`)
+                }
+                else {
 
+                    setmessageModalRef('Algo salio mal, intente de nuevo')
                 }
             }
             else {
-                console.error(error)
+                setmessageModalRef('Algo salio mal, intente de nuevo')
             }
+
+            modalAlertRef.current?.showModal()
 
         }
         finally {
@@ -86,6 +99,7 @@ export const useRegisterPage = () => {
         typeModalRef,
         messageModalRef,
         errors,
-        modalAlertRef
+        modalAlertRef,
+        control
     }
 }

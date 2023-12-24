@@ -1,13 +1,13 @@
-import { useSelector } from "react-redux"
-import { IProductsReponse, deleteOneCartDetailsAPI, getSubtotalByProduct } from "../API"
+
+import { IProductsReponse, deleteOneCartDetailsAPI } from "../API"
 import { convertToCurrency } from "../helpers"
-import { RootState } from "../store"
-import { Dispatch, MutableRefObject, SetStateAction, useEffect, useState } from "react"
-import { updateCartDetailsQuantityAPI } from "../API/updateCartDetailsQuantityAPI"
+
+import { Dispatch, MutableRefObject, SetStateAction, } from "react"
+import { useCartCardProduct } from "../hooks"
 
 
 
-interface Propss {
+interface Props {
     product: IProductsReponse,
     id: string
     quantity: number
@@ -17,36 +17,13 @@ interface Propss {
     updateFinalCartDetails(): void
 }
 
-export const CartCardProduct = ({ product, id, quantity, setOnClickConfirmDelete, updateCartProducts, modalConfirmDeleteRef, updateFinalCartDetails }: Propss) => {
+export const CartCardProduct = ({ product, id, quantity, setOnClickConfirmDelete, updateCartProducts, modalConfirmDeleteRef, updateFinalCartDetails }: Props) => {
 
-    const [quantityState, setQuantityState] = useState<number>(quantity)
-
-    const { idShoppingCart } = useSelector((state: RootState) => state.auth)
-
-    const [subTotalByProduct, setSubTotalByProduct] = useState(0)
-
-
-    useEffect(() => {
-
-
-        (async () => {
-            const dataAPI = await getSubtotalByProduct({ idProduct: product.id, idShoppingCart })
-            setSubTotalByProduct(dataAPI.subtotal_by_product)
-        })();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [quantityState])
-
-
-    const onClickUpdateQuantity = async ({ quantity, idCartDetails }: { quantity: number, idCartDetails: string }) => {
-        try {
-            const dataAPI = await updateCartDetailsQuantityAPI({ idCartDetails, quantity })
-            setQuantityState(dataAPI.quantity)
-            updateFinalCartDetails()
-
-        } catch (error) {
-            console.error(error)
-        }
-    }
+    const { onClickUpdateQuantity, subTotalByProduct, quantityState } = useCartCardProduct({
+        product,
+        quantityInitialState: quantity,
+        updateFinalCartDetails
+    })
 
 
     return (

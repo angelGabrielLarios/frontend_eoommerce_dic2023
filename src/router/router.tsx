@@ -3,7 +3,7 @@ import { Navigate, createBrowserRouter } from "react-router-dom";
 import { CartPage, ErrorInvalidTokenPage, HomePage, LoginPage, ProductInfoPage, RecoveryPassPage, RegisterPage, RestorePassPage } from "../pages";
 import { getProductsAPI, getProductsByIdAPI, getProductsBySectionAPI } from "../API";
 import { GridCardsProduct } from "../components"
-import { CosaPage } from "../pages/CosaPage.tsx";
+
 
 export const router = createBrowserRouter([
     {
@@ -53,6 +53,10 @@ export const router = createBrowserRouter([
         </PrivateRoute>
     },
     {
+        path: '/auth/*',
+        element: <LoginPage />
+    },
+    {
         path: '/auth/login',
         element: <LoginPage />
     },
@@ -72,15 +76,7 @@ export const router = createBrowserRouter([
         path: '/auth/error-invalid-token',
         element: <ErrorInvalidTokenPage />
     },
-    {
-        path: `auth/template-email`,
-        element:
-            <>
 
-                <CosaPage />
-
-            </>
-    },
     {
         path: `/cart`,
         element: <PrivateRoute>

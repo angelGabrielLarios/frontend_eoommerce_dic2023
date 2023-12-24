@@ -1,51 +1,17 @@
-
-import { useState } from 'react';
-import { ToastComponent } from '.';
-import { IProductsReponse, addProductToCart } from '../API';
+import { IProductsReponse } from '../API';
 import { convertToCurrency } from '../helpers';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import { LoadingComponent } from './LoadingComponent';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState, setIdShoppingCart } from '../store';
-
-
-
+import { useCardProductView } from '../hooks';
 
 interface Props extends IProductsReponse { }
 
 export const CardProductView = ({ name, price, id, imageURL, section, description }: Props) => {
 
 
-    const [isLoading, setIsLoading] = useState(false)
+    const { isLoading, onClickAddToCart, profile } = useCardProductView()
 
-    const { profile } = useSelector((state: RootState) => state.auth)
-    const dispatch = useDispatch()
 
-    const onClickAddToCart = async ({ idUser, idProduct }: { idUser: string, idProduct: string }) => {
-        try {
-            setIsLoading(true)
-            const dataAPI = await addProductToCart({ idUser, idProduct })
-            dispatch(setIdShoppingCart({ idShoppingCart: dataAPI.shoppingCart.id }))
-
-            toast(
-                (t) => (
-                    <>
-
-                        <ToastComponent
-                            t={t}
-                            text='Se agrego el producto al carrito correctamente'
-                        />
-                    </>
-
-                )
-            );
-        } catch (error) {
-            console.error(error)
-        }
-        finally {
-            setIsLoading(false)
-        }
-    }
 
     return (
         <>

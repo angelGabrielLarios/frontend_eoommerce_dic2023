@@ -6,12 +6,12 @@ import { ExceptionNestjs, IExceptionNestJs } from "./errors"
 import { urlAPI } from "./url"
 
 
-export const registerAPI = async (firstName: string, lastName: string, phone: string, email: string, password: string) => {
+export const registerAPI = async ({ firstName, lastName, email, password, phone, address }: { firstName: string, lastName: string, phone: string, email: string, password: string, address: string }) => {
 
 
     const response = await fetch(`${urlAPI}/auth/register`, {
         method: 'POST',
-        body: JSON.stringify({ firstName, lastName, phone, email, password }),
+        body: JSON.stringify({ firstName, lastName, phone, email, password, address }),
         headers: {
             "Content-Type": "application/json"
         },

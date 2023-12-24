@@ -1,38 +1,10 @@
-import { useEffect, useState } from "react"
-import { ISectionResponse, getSectionsAPI } from "../API"
-import { NavLink, useNavigate } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { RootState, setAccessToken, setIdShoppingCart, setProfile } from "../store"
+import { NavLink } from "react-router-dom"
+import { useNavbar } from "../hooks/components"
 
 
 export const Navbar = () => {
 
-    const [sections, setSections] = useState<ISectionResponse[] | []>([])
-
-    const { profile } = useSelector((state: RootState) => state.auth)
-
-    const navigate = useNavigate()
-    const dispath = useDispatch()
-    useEffect(() => {
-        getSectionsAPI()
-            .then((sections) => {
-
-                setSections(sections)
-            })
-            .catch(error => {
-                console.error(error)
-                return error
-            })
-    }, [])
-
-
-    const onClickLogOut = () => {
-        dispath(setProfile({ profile: null }))
-        dispath(setAccessToken(``))
-        dispath(setIdShoppingCart({ idShoppingCart: `` }))
-
-        navigate(`/auth/login`)
-    }
+    const { onClickLogOut, profile, sections } = useNavbar()
     return (
         <>
             <div className="navbar bg-base-100">

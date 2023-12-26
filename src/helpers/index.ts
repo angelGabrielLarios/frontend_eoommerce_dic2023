@@ -1,1 +1,2 @@
-export * from './convertToCurrency'
+export * from './convertToCurrency.ts'
+export * from './formatDate.ts'

@@ -4,4 +4,4 @@ export * from './useRecoveryPassPage.ts'
 export * from './useRegisterPage.ts'
 export * from './useRestorePassPage.ts'
 export * from './useCartPage.ts'
-
+export * from './useHomePage.ts'

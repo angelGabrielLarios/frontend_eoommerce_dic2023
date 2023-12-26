@@ -93,9 +93,17 @@ export const Navbar = () => {
                                     Nombre: {`${profile?.firstName} ${profile?.lastName}`}
                                 </a>
                             </li>
+                            <li>
+                                <NavLink
+                                    to={`/sections-visited`}
+                                >
+                                    Secciones Visitadas
+                                </NavLink>
+                            </li>
                             <li
                                 onClick={onClickLogOut}
                             ><a className="text-error font-bold">Cerrar Sesión</a></li>
+
                         </ul>
                     </div>
                 </div>

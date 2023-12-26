@@ -13,6 +13,7 @@ export interface IProductsReponse {
 
 export interface ISection {
     name: string;
+    id: string
 }
 
 export const getProductsAPI = async () => {

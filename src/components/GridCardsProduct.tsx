@@ -1,11 +1,31 @@
-import { useLoaderData } from "react-router-dom"
-import { IProductsReponse } from "../API"
+import { useLoaderData, useParams } from "react-router-dom"
+import { IProductsReponse, registerSectionVisited } from "../API"
 import { CardProduct } from "."
+import { useEffect } from "react"
+import { useSelector } from "react-redux"
+import { RootState } from "../store"
 
 
 export const GridCardsProduct = () => {
 
-    const products: IProductsReponse[] = useLoaderData() as IProductsReponse[]
+
+    const { products, idSection } = useLoaderData() as { products: IProductsReponse[], idSection: string }
+
+    const auth = useSelector((state: RootState) => state.auth)
+
+    const params = useParams()
+
+    useEffect(() => {
+        (async () => {
+            if (params?.section) {
+                const dataAPI = await registerSectionVisited({ userId: auth.profile?.id || ``, sectionId: idSection })
+                console.log(dataAPI)
+            }
+
+        })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [products])
+
 
     return (
         <>

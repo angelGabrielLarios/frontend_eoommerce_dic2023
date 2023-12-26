@@ -1,5 +1,5 @@
 
-import { CartCardProduct, ConfirmDeleteModal } from "../components"
+import { ButtonPaypal, CartCardProduct, ConfirmDeleteModal } from "../components"
 import { getCartProductsByIdShoppingCartAPI, getTotalCartDetailsByIdSC } from "../API";
 
 
@@ -17,7 +17,8 @@ export const CartPage = () => {
         totalFinalState,
         setTotalFinalState,
         idShoppingCart,
-        isLoading
+        isLoading,
+        producstForPaymentPaypal
     } = useCartPage()
 
     return (
@@ -100,12 +101,20 @@ export const CartPage = () => {
 
                                         </div>
                                     </article>
-                                    <button
-                                        disabled={cartProducts.length === 0}
-                                        className="btn btn-secondary w-full"
-                                    >
-                                        Pagar
-                                    </button>
+
+
+
+                                    {
+                                        (cartProducts.length !== 0)
+                                            ?
+                                            <div className="bg-primary">
+                                                <ButtonPaypal
+                                                    producstForPaymentPaypal={producstForPaymentPaypal}
+                                                />
+
+                                            </div>
+                                            : null
+                                    }
                                 </div>
                             </article>
                         </section>

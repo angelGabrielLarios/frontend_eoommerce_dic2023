@@ -1,6 +1,6 @@
 import { PrivateRoute } from "./PrivateRoute.tsx";
 import { Navigate, createBrowserRouter } from "react-router-dom";
-import { CartPage, ErrorInvalidTokenPage, HomePage, LoginPage, ProductInfoPage, RecoveryPassPage, RegisterPage, RestorePassPage } from "../pages";
+import { CartPage, ErrorInvalidTokenPage, HomePage, LoginPage, ProductInfoPage, RecoveryPassPage, RegisterPage, RestorePassPage, TableSectionsVisitedPage } from "../pages";
 import { getProductsAPI, getProductsByIdAPI, getProductsBySectionAPI } from "../API";
 import { GridCardsProduct } from "../components"
 
@@ -21,7 +21,10 @@ export const router = createBrowserRouter([
                 element: <GridCardsProduct />,
                 loader: async () => {
                     const products = await getProductsAPI()
-                    return products
+                    return {
+                        products,
+                        idSection: ``
+                    }
                 }
             },
             {
@@ -30,7 +33,12 @@ export const router = createBrowserRouter([
                 loader: async ({ params }) => {
                     const { section } = params as { section: string }
                     const products = await getProductsBySectionAPI({ nameSection: section })
-                    return products
+
+                    const idSection = products[0].section.id
+                    return {
+                        products,
+                        idSection
+                    }
                 },
 
             },
@@ -81,6 +89,12 @@ export const router = createBrowserRouter([
         path: `/cart`,
         element: <PrivateRoute>
             <CartPage />
+        </PrivateRoute>
+    },
+    {
+        path: '/sections-visited',
+        element: <PrivateRoute>
+            <TableSectionsVisitedPage />
         </PrivateRoute>
     }
 

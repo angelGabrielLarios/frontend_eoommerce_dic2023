@@ -109,7 +109,12 @@ export const CartPage = () => {
                                             ?
                                             <div className="bg-primary">
                                                 <ButtonPaypal
+                                                    setcartProducts={setcartProducts}
                                                     producstForPaymentPaypal={producstForPaymentPaypal}
+                                                    updatePriceTotal={() => {
+
+                                                        setTotalFinalState(0)
+                                                    }}
                                                 />
 
                                             </div>

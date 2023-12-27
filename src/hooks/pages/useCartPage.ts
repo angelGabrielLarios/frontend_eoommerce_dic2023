@@ -31,23 +31,34 @@ export const useCartPage = () => {
 
         (async () => {
             setisLoading(true)
-            const cartProducts = await getCartProductsByIdShoppingCartAPI({ idShoppingCart })
-            console.log(cartProducts)
 
-            setProductsForPaymentPaypal(
-                cartProducts.map(product => {
-                    return {
-                        name: product.product.name,
-                        description: product.product.description,
-                        price: product.product.price,
-                        quantity: product.quantity
-                    }
-                })
-            )
+            try {
+                const cartProducts = await getCartProductsByIdShoppingCartAPI({ idShoppingCart })
 
 
-            setcartProducts(cartProducts)
-            setisLoading(false)
+                setProductsForPaymentPaypal(
+                    cartProducts.map(product => {
+                        return {
+                            name: product.product.name,
+                            description: product.product.description,
+                            price: product.product.price,
+                            quantity: product.quantity
+                        }
+                    })
+                )
+
+
+                setcartProducts(cartProducts)
+
+            } catch (error) {
+                console.error(error)
+                setcartProducts([])
+                setProductsForPaymentPaypal([])
+            }
+            finally {
+                setisLoading(false)
+            }
+
 
         })();
 
